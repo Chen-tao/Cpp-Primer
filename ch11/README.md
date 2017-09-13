@@ -60,7 +60,12 @@ copy(v.begin(), v.end(), back_inserter(c)); // illegal, no `push_back` in `set`.
 copy(c.begin(), c.end(), inserter(v, v.end())); // legal.
 copy(c.begin(), c.end(), back_inserter(v)); // legal.
 ```
-## [Exercise 11.18](ex11_18.cpp)
+## Exercise 11.18:
+>Write the type of map_it from the loop on page 430 without using auto or decltype.
+
+```cpp
+std::map<std::string, size_t>::const_iterator;
+```
 ## Exercise 11.19:
 >Define a variable that you initialize by calling begin() on the multiset named bookstore from 11.2.2 (p. 425).
 Write the variable’s type without using auto or decltype.
@@ -113,14 +118,7 @@ const string& transform(const string &s, const map<string, string> &m)
     return m[s];
 }
 ```
-Such code could be explained as following pseudocode:
-```python
-    if m contains key s:
-        return m[s]
-    else:
-        insert pair {s, ""} into m
-        return m[s]     // That is an empty string
-```
+The above code won't compile because the subscript operator might insert an element (when the element with the key s is not found), and we may use subscript only on a map that is not const.
 
 ## Exercise 11.35:
 >In buildMap, what effect, if any, would there be from rewriting `trans_map[key] = value.substr(1);` as `trans_map.insert({ key, value.substr(1) })`?
@@ -132,7 +130,7 @@ Such code could be explained as following pseudocode:
 >Our program does no checking on the validity of either input file. In particular, it assumes that the rules in the transformation file are all sensible.
 What would happen if a line in that file has a key, one space, and then the end of the line? Predict the behavior and then check it against your version of the program.
 
-If so, a key-value pair is going to be added into the map: `{key, ""}`. As a result, any key would be replaced with empty string.
+If so, a key-value pair will be `{key, " "}`(" ".size() !> 1), which cannot be added into the map. As a result, the key would not be replaced with any string.
 
 ## Exercise 11.37:
 >What are the advantages of an unordered container as compared to the ordered version of that container? What are the advantages of the ordered version?
